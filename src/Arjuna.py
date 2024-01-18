@@ -18,8 +18,8 @@ serialcomm.timeout = 1
 detector = HandDetector(detectionCon=0.8, maxHands=1)
 
 # find function
-x = [193, 153, 129, 107, 97, 86, 78, 70, 64, 59, 56, 50, 49, 46, 43, 40,  38, ]
-y = [20,   25,  30,  35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, ]
+x = [193, 153, 129, 107, 97, 86, 78, 70, 64, 59, 56, 50, 49, 46, 43, 40,  38, ] #data set taken "distance_virtual"
+y = [20,   25,  30,  35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, ] #data set taken "distance form hand to camera using measuring tape"
 coff = np.polyfit(x,y,2)   # y = Ax2 + Bx + C
 A, B, C = coff
 #print(A, B, C)
@@ -32,9 +32,9 @@ while True:
     hands = detector.findHands(img, draw=False)
 
     if hands:
-        lmList = hands[0]['lmList']
+        lmList = hands[0]['lmList']# Landmarks are specific points on the hand, such as the tips of fingers.
         bx, by, bw, bh = hands[0]['bbox']
-        hand_x1, hand_y1 = lmList[5]
+        hand_x1, hand_y1 = lmList[5]   #https://www.geeksforgeeks.org/face-and-hand-landmarks-detection-using-python-mediapipe-opencv/
         hand_x2, hand_y2 = lmList[17]
         center_x = abs((hand_x2+hand_x1)/2)
         center_y = abs((hand_y2+hand_y1)/2)
@@ -51,7 +51,7 @@ while True:
         else:
             Z_real = (A * (distance_virtual**2)) + (B * distance_virtual) + C
 
-        # X, Y axis calculation
+        # X, Y axis calculation based on the similar triangle concept
         scrnCenter_x = 512
         scrnCenter_y = 288
         X_virtual = -(center_x - scrnCenter_x)
